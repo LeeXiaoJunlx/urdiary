@@ -53,7 +53,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
   return (
     <>
       <Card
-        className="h-[160px] p-5 bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow cursor-pointer"
+        className="h-40 p-5 bg-bg cursor-pointer hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
         onClick={() => setIsOpen(true)}
       >
         <div className="flex justify-between items-start mb-2">
