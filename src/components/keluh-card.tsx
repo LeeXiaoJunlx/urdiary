@@ -53,7 +53,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
   return (
     <>
       <Card
-        className="h-40 p-5 bg-bg cursor-pointer hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
+        className="p-5 bg-bg cursor-pointer hover:translate-x-boxShadowX hover:translate-y-boxShadowY hover:shadow-none transition-all"
         onClick={() => setIsOpen(true)}
       >
         <div className="flex justify-between items-start mb-2">
@@ -73,17 +73,17 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
           </div>
         </div>
 
-        <div className="h-[40px] overflow-hidden">
-          <p className="text-sm line-clamp-2">
+        <div className="h-8 overflow-hidden">
+          <p className="text-base line-clamp-1">
             {post.message}
           </p>
         </div>
 
-        <div className="flex items-center gap-4 mt-2">
+        <div className="flex items-center gap-2 mt-2">
           <Button
-            variant="ghost"
+            variant= "noShadow"
             size="sm"
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 bg-neutral hover:bg-main"
             onClick={handleLove}
           >
             <Heart
@@ -93,11 +93,14 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
             />
             <span className="text-sm">{post.loveCount}</span>
           </Button>
-
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <MessageCircle className="w-4 h-4" />
-            <span className="text-sm">{post.comments.length}</span>
-          </div>
+          <Button
+            variant="noShadow"
+            size="sm"
+            className="flex items-center gap-2 bg-neutral hover:bg-main"
+          >
+          <MessageCircle className="w-4 h-4" />
+          <span className="text-sm">{post.comments.length}</span>
+          </Button>
         </div>
       </Card>
 
@@ -118,12 +121,12 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
             <p className="text-sm whitespace-pre-wrap">{post.message}</p>
 
             <div className="flex items-center gap-4">
-              <Button
-                variant="ghost"
-                size="sm"
-                className="flex items-center gap-2"
-                onClick={handleLove}
-              >
+            <Button
+            variant= "noShadow"
+            size="sm"
+            className="flex items-center gap-2 bg-neutral hover:bg-main"
+            onClick={handleLove}
+          >
                 <Heart
                   className={cn('w-5 h-5', {
                     'fill-red-500 text-red-500': post.loveCount > 0,
@@ -133,9 +136,9 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
               </Button>
 
               <Button
-                variant="ghost"
+                variant="noShadow"
                 size="sm"
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 bg-neutral hover:bg-main"
                 onClick={() => setShowComments(!showComments)}
               >
                 <MessageCircle className="w-5 h-5" />
