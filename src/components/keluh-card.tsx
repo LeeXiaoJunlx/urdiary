@@ -61,7 +61,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
             <p className="text-xs text-gray-500">
               Dari: {post.from}
             </p>
-            <p className="text-xs font-medium text-primary">
+            <p className="text-xs font-medium text-primary text-text">
               Untuk: {post.to}
             </p>
           </div>
@@ -74,7 +74,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
         </div>
 
         <div className="h-8 overflow-hidden">
-          <p className="text-base line-clamp-1">
+          <p className="text-base line-clamp-1 text-text">
             {post.message}
           </p>
         </div>
@@ -83,7 +83,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
           <Button
             variant= "noShadow"
             size="sm"
-            className="flex items-center gap-2 bg-neutral hover:bg-main"
+            className="flex items-center gap-2 bg-neutral hover:bg-main dark:bg-bw"
             onClick={handleLove}
           >
             <Heart
@@ -91,15 +91,15 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
                 'fill-red-500 text-red-500': post.loveCount > 0,
               })}
             />
-            <span className="text-sm">{post.loveCount}</span>
+            <span className="text-sm text-text">{post.loveCount}</span>
           </Button>
           <Button
             variant="noShadow"
             size="sm"
-            className="flex items-center gap-2 bg-neutral hover:bg-main"
+            className="flex items-center gap-2 bg-neutral hover:bg-main dark:bg-bw"
           >
-          <MessageCircle className="w-4 h-4" />
-          <span className="text-sm">{post.comments.length}</span>
+          <MessageCircle className="w-4 h-4 text-text" />
+          <span className="text-sm text-text">{post.comments.length}</span>
           </Button>
         </div>
       </Card>
@@ -124,7 +124,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
             <Button
             variant= "noShadow"
             size="sm"
-            className="flex items-center gap-2 bg-neutral hover:bg-main"
+            className="flex items-center gap-2 bg-neutral hover:bg-main dark:bg-bw"
             onClick={handleLove}
           >
                 <Heart
@@ -132,17 +132,17 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
                     'fill-red-500 text-red-500': post.loveCount > 0,
                   })}
                 />
-                <span>{post.loveCount}</span>
+                <span className="text-text">{post.loveCount}</span>
               </Button>
 
               <Button
                 variant="noShadow"
                 size="sm"
-                className="flex items-center gap-2 bg-neutral hover:bg-main"
+                className="flex items-center gap-2 bg-neutral hover:bg-main dark:bg-bw"
                 onClick={() => setShowComments(!showComments)}
               >
-                <MessageCircle className="w-5 h-5" />
-                <span>{post.comments.length} Komentar</span>
+                <MessageCircle className="w-5 h-5 text-text " />
+                <span className="text-text">{post.comments.length} Komentar</span>
               </Button>
             </div>
 

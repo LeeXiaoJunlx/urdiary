@@ -7,6 +7,7 @@ import { KeluhAdd } from '@/components/keluh-add';
 import { getPosts } from '@/lib/storage';
 import { MessageSquarePlus } from 'lucide-react';
 import { KeluhPost } from './types';
+import { ModeToggle } from '@/components/mode-toggle';
 
 export default function Home() {
   const [posts, setPosts] = useState<KeluhPost[]>([]);
@@ -21,7 +22,8 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <main className="min-h-screen bg-gray-50 dark:bg-zinc-900">
+      <ModeToggle/>
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col items-center mb-12">
           <h1 className="text-4xl font-black text-center mb-4">
