@@ -23,7 +23,16 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-zinc-900">
-      <ModeToggle/>
+      <nav className="border-b-4 border-border bg-bg">
+        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+          <div className="font-bold text-lg">
+            Keluh Kesah
+          </div>
+          <div className="flex items-center gap-4">
+            <ModeToggle />
+          </div>
+        </div>
+      </nav>
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col items-center mb-12">
           <h1 className="text-4xl font-black text-center mb-4">
