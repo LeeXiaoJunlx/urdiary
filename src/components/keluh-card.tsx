@@ -1,0 +1,184 @@
+'use client';
+
+import { useState } from 'react';
+import { MenfessPost } from '@/app/types';
+import { Heart, MessageCircle, Calendar } from 'lucide-react';
+import { Button } from './ui/button';
+import { Card } from './ui/card';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
+import { cn } from '@/lib/utils';
+import { toggleLove, addComment } from '@/lib/storage';
+import { Input } from './ui/input';
+
+interface MenfessCardProps {
+  post: MenfessPost;
+  onUpdate: () => void;
+}
+
+export function MenfessCard({ post, onUpdate }: MenfessCardProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [showComments, setShowComments] = useState(false);
+  const [comment, setComment] = useState('');
+  const [commentFrom, setCommentFrom] = useState('Anonymous');
+
+  const handleLove = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    toggleLove(post.id);
+    onUpdate();
+  };
+
+  const handleComment = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!comment.trim()) return;
+
+    addComment(post.id, {
+      id: crypto.randomUUID(),
+      from: commentFrom || 'Anonymous',
+      text: comment,
+      timestamp: new Date().toISOString(),
+    });
+    setComment('');
+    setCommentFrom('Anonymous');
+    onUpdate();
+  };
+
+  const date = new Date(post.timestamp);
+  const formattedDateTime = date.toLocaleString([], {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+
+  return (
+    <>
+      <Card
+        className="h-[180px] p-4 bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow cursor-pointer"
+        onClick={() => setIsOpen(true)}
+      >
+        <div className="flex justify-between items-start mb-2">
+          <div className="space-y-1">
+            <p className="text-xs text-gray-500">
+              From: {post.from}
+            </p>
+            <p className="text-xs font-medium text-primary">
+              To: {post.to}
+            </p>
+          </div>
+          <div className="text-xs text-gray-400">
+            <div className="flex items-center gap-1 justify-end">
+              <Calendar className="w-3 h-3" />
+              <span>{formattedDateTime}</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="h-[60px] overflow-hidden">
+          <p className="text-sm line-clamp-2">
+            {post.message}
+          </p>
+        </div>
+
+        <div className="flex items-center gap-4 mt-4">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="flex items-center gap-2"
+            onClick={handleLove}
+          >
+            <Heart
+              className={cn('w-4 h-4', {
+                'fill-red-500 text-red-500': post.loveCount > 0,
+              })}
+            />
+            <span className="text-sm">{post.loveCount}</span>
+          </Button>
+
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <MessageCircle className="w-4 h-4" />
+            <span className="text-sm">{post.comments.length}</span>
+          </div>
+        </div>
+      </Card>
+
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="sm:max-w-[500px]">
+          <DialogHeader>
+            <DialogTitle>To: {post.to}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <p className="text-sm text-gray-500">From: {post.from}</p>
+              <div className="text-sm text-gray-400 flex items-center gap-1">
+                <Calendar className="w-4 h-4" />
+                <span>{formattedDateTime}</span>
+              </div>
+            </div>
+
+            <p className="text-sm whitespace-pre-wrap">{post.message}</p>
+
+            <div className="flex items-center gap-4">
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-2"
+                onClick={handleLove}
+              >
+                <Heart
+                  className={cn('w-5 h-5', {
+                    'fill-red-500 text-red-500': post.loveCount > 0,
+                  })}
+                />
+                <span>{post.loveCount}</span>
+              </Button>
+
+              <Button
+                variant="ghost"
+                size="sm"
+                className="flex items-center gap-2"
+                onClick={() => setShowComments(!showComments)}
+              >
+                <MessageCircle className="w-5 h-5" />
+                <span>{post.comments.length} comments</span>
+              </Button>
+            </div>
+
+            {showComments && (
+              <div className="space-y-4">
+                <form onSubmit={handleComment} className="flex gap-2">
+                  <Input
+                    placeholder="From (optional)"
+                    value={commentFrom}
+                    onChange={(e) => setCommentFrom(e.target.value)}
+                    className="w-1/3"
+                  />
+                  <Input
+                    placeholder="Add a comment..."
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    className="flex-1"
+                  />
+                  <Button type="submit" size="sm">
+                    Send
+                  </Button>
+                </form>
+
+                <div className="space-y-3">
+                  {post.comments.map((comment) => (
+                    <div key={comment.id} className="text-sm space-y-1">
+                      <p className="font-medium">{comment.from}</p>
+                      <p className="text-gray-600 dark:text-gray-300">
+                        {comment.text}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
