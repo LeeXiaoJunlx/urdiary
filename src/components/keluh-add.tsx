@@ -39,7 +39,7 @@ export function KeluhAdd({
     };
 
     savePost(newPost);
-    setFormData({ from: 'Anonim', to: '', message: '' });
+    setFormData({ from: '', to: '', message: '' });
     onOpenChange(false);
     onPostCreated();
   };

@@ -19,7 +19,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [comment, setComment] = useState('');
-  const [commentFrom, setCommentFrom] = useState('Anonymous');
+  const [commentFrom, setCommentFrom] = useState('');
 
   const handleLove = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -33,12 +33,11 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
 
     addComment(post.id, {
       id: crypto.randomUUID(),
-      from: commentFrom || 'Anonymous',
+      from: commentFrom || 'Anonim',
       text: comment,
       timestamp: new Date().toISOString(),
     });
     setComment('');
-    setCommentFrom('Anonymous');
     onUpdate();
   };
 
@@ -54,7 +53,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
   return (
     <>
       <Card
-        className="h-[180px] p-4 bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow cursor-pointer"
+        className="h-[160px] p-5 bg-white dark:bg-gray-800 hover:shadow-lg transition-shadow cursor-pointer"
         onClick={() => setIsOpen(true)}
       >
         <div className="flex justify-between items-start mb-2">
@@ -74,13 +73,13 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
           </div>
         </div>
 
-        <div className="h-[60px] overflow-hidden">
+        <div className="h-[40px] overflow-hidden">
           <p className="text-sm line-clamp-2">
             {post.message}
           </p>
         </div>
 
-        <div className="flex items-center gap-4 mt-4">
+        <div className="flex items-center gap-4 mt-2">
           <Button
             variant="ghost"
             size="sm"
@@ -103,7 +102,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
       </Card>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-[500px]">
+        <DialogContent className="sm:max-w-[70vh] max-h-[80vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Untuk: {post.to}</DialogTitle>
           </DialogHeader>
@@ -148,19 +147,19 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
               <div className="space-y-4">
                 <form onSubmit={handleComment} className="flex gap-2">
                   <Input
-                    placeholder="From (optional)"
+                    placeholder="Dari (Opsional)"
                     value={commentFrom}
                     onChange={(e) => setCommentFrom(e.target.value)}
                     className="w-1/3"
                   />
                   <Input
-                    placeholder="Add a comment..."
+                    placeholder="Tambahkan komentar..."
                     value={comment}
                     onChange={(e) => setComment(e.target.value)}
                     className="flex-1"
                   />
                   <Button type="submit" size="sm">
-                    Send
+                    Kirim
                   </Button>
                 </form>
 
