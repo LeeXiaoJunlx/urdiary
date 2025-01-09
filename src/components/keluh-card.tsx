@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { MenfessPost } from '@/app/types';
+import { KeluhPost } from '@/app/types';
 import { Heart, MessageCircle, Calendar } from 'lucide-react';
 import { Button } from './ui/button';
 import { Card } from './ui/card';
@@ -10,12 +10,12 @@ import { cn } from '@/lib/utils';
 import { toggleLove, addComment } from '@/lib/storage';
 import { Input } from './ui/input';
 
-interface MenfessCardProps {
-  post: MenfessPost;
+interface KeluhCardProps {
+  post: KeluhPost;
   onUpdate: () => void;
 }
 
-export function MenfessCard({ post, onUpdate }: MenfessCardProps) {
+export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showComments, setShowComments] = useState(false);
   const [comment, setComment] = useState('');
@@ -60,10 +60,10 @@ export function MenfessCard({ post, onUpdate }: MenfessCardProps) {
         <div className="flex justify-between items-start mb-2">
           <div className="space-y-1">
             <p className="text-xs text-gray-500">
-              From: {post.from}
+              Dari: {post.from}
             </p>
             <p className="text-xs font-medium text-primary">
-              To: {post.to}
+              Untuk: {post.to}
             </p>
           </div>
           <div className="text-xs text-gray-400">
@@ -105,11 +105,11 @@ export function MenfessCard({ post, onUpdate }: MenfessCardProps) {
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle>To: {post.to}</DialogTitle>
+            <DialogTitle>Untuk: {post.to}</DialogTitle>
           </DialogHeader>
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <p className="text-sm text-gray-500">From: {post.from}</p>
+              <p className="text-sm text-gray-500">Dari: {post.from}</p>
               <div className="text-sm text-gray-400 flex items-center gap-1">
                 <Calendar className="w-4 h-4" />
                 <span>{formattedDateTime}</span>
@@ -140,7 +140,7 @@ export function MenfessCard({ post, onUpdate }: MenfessCardProps) {
                 onClick={() => setShowComments(!showComments)}
               >
                 <MessageCircle className="w-5 h-5" />
-                <span>{post.comments.length} comments</span>
+                <span>{post.comments.length} Komentar</span>
               </Button>
             </div>
 

@@ -5,7 +5,7 @@ export interface Comment {
   timestamp: string;
 }
 
-export interface MenfessPost {
+export interface KeluhPost {
   id: string;
   from: string;
   to: string;

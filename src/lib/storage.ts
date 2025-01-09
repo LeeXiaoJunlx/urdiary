@@ -1,20 +1,20 @@
-import { MenfessPost, Comment } from '@/app/types';
+import { KeluhPost, Comment } from '@/app/types';
 
-const STORAGE_KEY = 'menfess-posts';
+const STORAGE_KEY = 'keluh-posts';
 
-export function getPosts(): MenfessPost[] {
+export function getPosts(): KeluhPost[] {
   if (typeof window === 'undefined') return [];
   const posts = localStorage.getItem(STORAGE_KEY);
   return posts ? JSON.parse(posts) : [];
 }
 
-export function savePost(post: MenfessPost) {
+export function savePost(post: KeluhPost) {
   const posts = getPosts();
   posts.unshift(post);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
 }
 
-export function updatePost(updatedPost: MenfessPost) {
+export function updatePost(updatedPost: KeluhPost) {
   const posts = getPosts();
   const index = posts.findIndex((post) => post.id === updatedPost.id);
   if (index !== -1) {
