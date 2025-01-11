@@ -21,17 +21,17 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
   const [comment, setComment] = useState('');
   const [commentFrom, setCommentFrom] = useState('');
 
-  const handleLove = (e: React.MouseEvent) => {
+  const handleLove = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    toggleLove(post.id);
+    await toggleLove(post.id);
     onUpdate();
   };
 
-  const handleComment = (e: React.FormEvent) => {
+  const handleComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!comment.trim()) return;
 
-    addComment(post.id, {
+    await addComment(post.id, {
       id: crypto.randomUUID(),
       from: commentFrom || 'Anonim',
       text: comment,

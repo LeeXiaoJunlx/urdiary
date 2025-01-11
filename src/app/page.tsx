@@ -13,8 +13,9 @@ export default function Home() {
   const [posts, setPosts] = useState<KeluhPost[]>([]);
   const [isNewPostOpen, setIsNewPostOpen] = useState(false);
 
-  const loadPosts = () => {
-    setPosts(getPosts());
+  const loadPosts = async () => {
+    const posts = await getPosts();
+    setPosts(posts);
   };
 
   useEffect(() => {
