@@ -38,6 +38,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
       timestamp: new Date().toISOString(),
     });
     setComment('');
+    setCommentFrom('');
     onUpdate();
   };
 
