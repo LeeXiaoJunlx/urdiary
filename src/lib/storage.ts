@@ -7,6 +7,7 @@ const prisma = new PrismaClient();
 export async function getPosts() {
   return await prisma.post.findMany({
     include: { comments: true },
+    orderBy: { timestamp: 'desc' },
   });
 }
 
