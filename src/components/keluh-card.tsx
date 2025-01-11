@@ -24,7 +24,15 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
 
   const handleLove = async (e: React.MouseEvent) => {
     e.stopPropagation();
+    const lovedPosts = JSON.parse(localStorage.getItem('lovedPosts') || '[]');
+    if (lovedPosts.includes(post.id)) {
+      return; 
+    }
+
     await toggleLove(post.id);
+    lovedPosts.push(post.id);
+    localStorage.setItem('lovedPosts', JSON.stringify(lovedPosts));
+
     onUpdate();
   };
 
