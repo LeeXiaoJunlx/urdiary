@@ -1,44 +1,47 @@
-import { KeluhPost, Comment } from '@/app/types';
+"use server"
 
-const STORAGE_KEY = 'keluh-posts';
+import { PrismaClient, Post, Comment } from '@prisma/client';
 
-export function getPosts(): KeluhPost[] {
-  if (typeof window === 'undefined') return [];
-  const posts = localStorage.getItem(STORAGE_KEY);
-  return posts ? JSON.parse(posts) : [];
+const prisma = new PrismaClient();
+
+export async function getPosts() {
+  return await prisma.post.findMany({
+    include: { comments: true },
+    orderBy: { timestamp: 'desc' },
+  });
 }
 
-export function savePost(post: KeluhPost) {
-  const posts = getPosts();
-  posts.unshift(post);
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+export async function savePost(post: any) {
+  const { comments, ...postData } = post;
+  return await prisma.post.create({
+    data: postData,
+  });
 }
 
-export function updatePost(updatedPost: KeluhPost) {
-  const posts = getPosts();
-  const index = posts.findIndex((post) => post.id === updatedPost.id);
-  if (index !== -1) {
-    posts[index] = updatedPost;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
-  }
+export async function updatePost(updatedPost: Post) {
+  return await prisma.post.update({
+    where: { id: updatedPost.id },
+    data: updatedPost,
+  });
 }
 
-export function addComment(postId: string, comment: Comment) {
-  const posts = getPosts();
-  const post = posts.find((p) => p.id === postId);
+export async function addComment(postId: any, comment: Comment) {
+  return await prisma.comment.create({
+    data: {
+      ...comment,
+      postId,
+    },
+  });
+}
+
+export async function toggleLove(postId: any) {
+  const post = await prisma.post.findUnique({
+    where: { id: postId },
+  });
   if (post) {
-    post.comments.push(comment);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
+    return await prisma.post.update({
+      where: { id: postId },
+      data: { loveCount: post.loveCount + 1 },
+    });
   }
-}
-
-export function toggleLove(postId: string) {
-  const posts = getPosts();
-  const post = posts.find((p) => p.id === postId);
-  if (post) {
-    post.loveCount += 1;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(posts));
-    return post.loveCount;
-  }
-  return 0;
 }

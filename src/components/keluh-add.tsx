@@ -25,20 +25,19 @@ export function KeluhAdd({
     message: '',
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newPost: KeluhPost = {
+    const newPost: Omit<KeluhPost, 'comments'> = {
       id: crypto.randomUUID(),
       from: formData.from || 'Anonim',
       to: formData.to,
       message: formData.message,
-      timestamp: new Date().toISOString(),
+      timestamp: new Date(),
       loveCount: 0,
-      comments: [],
     };
 
-    savePost(newPost);
+    await savePost(newPost);
     setFormData({ from: '', to: '', message: '' });
     onOpenChange(false);
     onPostCreated();

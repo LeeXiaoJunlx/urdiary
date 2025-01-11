@@ -8,13 +8,18 @@ import { getPosts } from '@/lib/storage';
 import { MessageSquarePlus } from 'lucide-react';
 import { KeluhPost } from './types';
 import { ModeToggle } from '@/components/mode-toggle';
+import { SkeletonCard } from '@/components/skeleton-card';
 
 export default function Home() {
   const [posts, setPosts] = useState<KeluhPost[]>([]);
   const [isNewPostOpen, setIsNewPostOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const loadPosts = () => {
-    setPosts(getPosts());
+  const loadPosts = async () => {
+    setLoading(true);
+    const posts = await getPosts();
+    setPosts(posts);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -50,13 +55,21 @@ export default function Home() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
-          {posts.map((post) => (
-            <KeluhCard key={post.id} post={post} onUpdate={loadPosts} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
+            {[...Array(6)].map((_, index) => (
+              <SkeletonCard key={index} />
+            ))}
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
+            {posts.map((post) => (
+              <KeluhCard key={post.id} post={post} onUpdate={loadPosts} />
+            ))}
+          </div>
+        )}
 
-        {posts.length === 0 && (
+        {posts.length === 0 && !loading && (
           <div className="text-center text-muted-foreground mt-8">
             Belum ada yang ngeluh nih. Yuk mulai ngeluh!
           </div>

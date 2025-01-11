@@ -20,24 +20,37 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
   const [showComments, setShowComments] = useState(false);
   const [comment, setComment] = useState('');
   const [commentFrom, setCommentFrom] = useState('');
+  const [isCommentLoading, setIsCommentLoading] = useState(false);
 
-  const handleLove = (e: React.MouseEvent) => {
+  const handleLove = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    toggleLove(post.id);
+    const lovedPosts = JSON.parse(localStorage.getItem('lovedPosts') || '[]');
+    if (lovedPosts.includes(post.id)) {
+      return; 
+    }
+
+    await toggleLove(post.id);
+    lovedPosts.push(post.id);
+    localStorage.setItem('lovedPosts', JSON.stringify(lovedPosts));
+
     onUpdate();
   };
 
-  const handleComment = (e: React.FormEvent) => {
+  const handleComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!comment.trim()) return;
 
-    addComment(post.id, {
+    setIsCommentLoading(true);
+    await addComment(post.id, {
       id: crypto.randomUUID(),
       from: commentFrom || 'Anonim',
       text: comment,
-      timestamp: new Date().toISOString(),
+      timestamp: new Date(),
+      postId: post.id,
     });
     setComment('');
+    setCommentFrom('');
+    setIsCommentLoading(false);
     onUpdate();
   };
 
@@ -161,8 +174,12 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
                     onChange={(e) => setComment(e.target.value)}
                     className="flex-1"
                   />
-                  <Button type="submit" size="sm">
-                    Kirim
+                  <Button type="submit" size="sm" disabled={isCommentLoading}>
+                  {isCommentLoading ? (
+                      <span className="loader border-t-transparent border-white border-2 border-t-2 rounded-full w-4 h-4 animate-spin"></span>
+                    ) : (
+                      'Kirim'
+                    )}
                   </Button>
                 </form>
 
