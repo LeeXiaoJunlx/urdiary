@@ -37,7 +37,8 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
       id: crypto.randomUUID(),
       from: commentFrom || 'Anonim',
       text: comment,
-      timestamp: new Date().toISOString(),
+      timestamp: new Date(),
+      postId: post.id,
     });
     setComment('');
     setCommentFrom('');

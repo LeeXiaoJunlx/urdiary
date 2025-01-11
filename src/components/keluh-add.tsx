@@ -33,7 +33,7 @@ export function KeluhAdd({
       from: formData.from || 'Anonim',
       to: formData.to,
       message: formData.message,
-      timestamp: new Date().toISOString(),
+      timestamp: new Date(),
       loveCount: 0,
     };
 

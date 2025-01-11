@@ -2,7 +2,7 @@ export interface Comment {
   id: string;
   from: string;
   text: string;
-  timestamp: string;
+  timestamp: Date;
 }
 
 export interface KeluhPost {
@@ -10,7 +10,7 @@ export interface KeluhPost {
   from: string;
   to: string;
   message: string;
-  timestamp: string;
+  timestamp: Date;
   loveCount: number;
   comments: Comment[];
 }

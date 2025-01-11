@@ -1,6 +1,6 @@
 "use server"
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, Post, Comment } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -11,21 +11,21 @@ export async function getPosts() {
   });
 }
 
-export async function savePost(post) {
+export async function savePost(post: any) {
   const { comments, ...postData } = post;
   return await prisma.post.create({
     data: postData,
   });
 }
 
-export async function updatePost(updatedPost) {
+export async function updatePost(updatedPost: Post) {
   return await prisma.post.update({
     where: { id: updatedPost.id },
     data: updatedPost,
   });
 }
 
-export async function addComment(postId, comment) {
+export async function addComment(postId: any, comment: Comment) {
   return await prisma.comment.create({
     data: {
       ...comment,
@@ -34,7 +34,7 @@ export async function addComment(postId, comment) {
   });
 }
 
-export async function toggleLove(postId) {
+export async function toggleLove(postId: any) {
   const post = await prisma.post.findUnique({
     where: { id: postId },
   });
