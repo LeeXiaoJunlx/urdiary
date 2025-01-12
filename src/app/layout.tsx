@@ -3,6 +3,7 @@ import { DM_Sans } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import Script from "next/script";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -34,6 +35,10 @@ export default function RootLayout({
         <Toaster />
         </ThemeProvider>
       </body>
+      <Script
+      async
+      src="https://aldomi-c4d89e77fabd.herokuapp.com/script.js" 
+      data-website-id="bb1e9d82-e1fe-45d8-9a00-9a2a0dba1c67"/>
     </html>
   );
 }
