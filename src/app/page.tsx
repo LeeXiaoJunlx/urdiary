@@ -9,6 +9,9 @@ import { MessageSquarePlus } from 'lucide-react';
 import { KeluhPost } from './types';
 import { ModeToggle } from '@/components/mode-toggle';
 import { SkeletonCard } from '@/components/skeleton-card';
+import { cn } from '@/lib/utils';
+import { InteractiveGridPattern } from '@/components/ui/interactive-grid-pattern';
+
 
 export default function Home() {
   const [posts, setPosts] = useState<KeluhPost[]>([]);
@@ -27,8 +30,17 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-gray-50 dark:bg-zinc-900">
-      <nav className="border-b-4 border-border bg-bg">
+    <main className="relative min-h-screen bg-gray-50 dark:bg-zinc-900">
+      <InteractiveGridPattern
+        className={cn(
+          "[mask-image:radial-gradient(700px_circle_at_center,white,transparent)] ",
+        )}
+        width={30}
+        height={30}
+        squares={[80, 80]}
+        squaresClassName="hover:fill-main"
+      />
+      <nav className="relative z-10 border-b-4 border-border bg-bg">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center">
           <div className="font-bold text-lg">
             Keluh Kesah
@@ -40,13 +52,14 @@ export default function Home() {
       </nav>
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-col items-center mb-12">
-          <h1 className="text-4xl font-black text-center mb-4">
+          <h1 className="relative z-10 text-4xl font-black text-center mb-4">
             Keluh Kesah
           </h1>
-          <p className="text-muted-foreground text-center mb-6">
+          <p className="relative z-10 text-muted-foreground text-center mb-6">
             Silahkan berkeluh kesah di sini.
           </p>
           <Button
+            className='relative z-10'
             size="lg"
             onClick={() => setIsNewPostOpen(true)}
           >
@@ -62,7 +75,7 @@ export default function Home() {
             ))}
           </div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
             {posts.map((post) => (
               <KeluhCard key={post.id} post={post} onUpdate={loadPosts} />
             ))}
