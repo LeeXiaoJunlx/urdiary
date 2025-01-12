@@ -55,7 +55,6 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
     setIsCommentLoading(false);
     onUpdate();
     toast({
-      title: 'Komentar ditambahkan',
       description: 'Komentarmu telah berhasil ditambahkan',
     });
   };

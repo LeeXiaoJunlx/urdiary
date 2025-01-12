@@ -49,7 +49,6 @@ export function KeluhAdd({
     onPostCreated();
 
     toast({
-      title: 'Keluhan ditambahkan',
       description: 'Keluhanmu telah berhasil ditambahkan',
     });
   };
