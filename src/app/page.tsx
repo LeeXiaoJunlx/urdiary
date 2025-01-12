@@ -4,18 +4,18 @@ import { KeluhAdd } from "@/components/keluh-add";
 import { KeluhCard } from "@/components/keluh-card";
 import { Button } from "@/components/ui/button";
 import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern";
-import { Label } from "@/components/ui/label";
-import { Switch } from "@/components/ui/switch";
 import { getPosts } from "@/lib/storage";
 import { cn } from "@/lib/utils";
 import { MessageSquarePlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { KeluhPost } from "./types";
 import { Navbar } from "@/components/ui/navbar";
+import Image from "next/image";
 
 export default function Home() {
   const [posts, setPosts] = useState<KeluhPost[]>([]);
   const [isNewPostOpen, setIsNewPostOpen] = useState(false);
+  const [isWibuMode, setIsWibuMode] = useState(false);
 
   const loadPosts = async () => {
     const posts = await getPosts();
@@ -37,21 +37,26 @@ export default function Home() {
         squares={[80, 80]}
         squaresClassName="hover:fill-main"
       />
-      <Navbar />
+      <Navbar isWibuMode={isWibuMode} setIsWibuMode={setIsWibuMode} />
       <div className="container mx-auto px-4 py-8 pt-24">
         <div className="flex items-center space-x-2 justify-center mb-6">
-          <Switch id="wibu-mode" className="z-10" />
-          <Label htmlFor="wibu-mode" className="z-10">
-            Wibu Mode
-          </Label>
+          
         </div>
         <div className="flex flex-col items-center mb-12">
-          <h1 className="relative z-10 text-4xl font-black text-center mb-4">
-            Keluh Kesah
-          </h1>
-          <p className="relative z-10 text-muted-foreground text-center mb-6">
-            Silahkan berkeluh kesah di sini.
-          </p>
+        {isWibuMode ? (
+            <div className="z-10 mb-7 -mt-2">
+              <Image src="/keluhkesah.png" alt="Keluh Kesah Logo" width={400} height={400} className="w-80 sm:w-96" unoptimized />
+            </div>
+          ) : (
+            <div>
+              <h1 className="relative z-10 text-4xl font-black text-center mb-4">
+                Keluh Kesah
+              </h1>
+              <p className="relative z-10 text-muted-foreground text-center mb-6">
+                Silahkan berkeluh kesah di sini.
+              </p>
+            </div>
+          )}
           <Button
             className="relative z-10"
             size="lg"
