@@ -2,7 +2,6 @@
 
 import { KeluhAdd } from "@/components/keluh-add";
 import { KeluhCard } from "@/components/keluh-card";
-import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 import { InteractiveGridPattern } from "@/components/ui/interactive-grid-pattern";
 import { Label } from "@/components/ui/label";
@@ -12,6 +11,7 @@ import { cn } from "@/lib/utils";
 import { MessageSquarePlus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { KeluhPost } from "./types";
+import { Navbar } from "@/components/ui/navbar";
 
 export default function Home() {
   const [posts, setPosts] = useState<KeluhPost[]>([]);
@@ -37,14 +37,7 @@ export default function Home() {
         squares={[80, 80]}
         squaresClassName="hover:fill-main"
       />
-      <nav className="fixed top-0 right-0 w-full z-50 border-b-4 border-border bg-bg">
-        <div className="container mx-auto px-4 py-3 flex justify-between items-center">
-          <div className="font-bold text-lg">Keluh Kesah</div>
-          <div className="flex items-center gap-4">
-            <ModeToggle />
-          </div>
-        </div>
-      </nav>
+      <Navbar />
       <div className="container mx-auto px-4 py-8 pt-24">
         <div className="flex items-center space-x-2 justify-center mb-6">
           <Switch id="wibu-mode" className="z-10" />
