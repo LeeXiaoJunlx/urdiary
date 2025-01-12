@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { KeluhPost } from '@/app/types';
 import { Heart, MessageCircle, Calendar } from 'lucide-react';
 import { Button } from './ui/button';
@@ -22,6 +22,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
   const [comment, setComment] = useState('');
   const [commentFrom, setCommentFrom] = useState('');
   const [isCommentLoading, setIsCommentLoading] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
   const { toast } = useToast();
 
   const handleLove = async (e: React.MouseEvent) => {
@@ -38,25 +39,34 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
     onUpdate();
   };
 
+  useEffect(() => {
+    if (cooldown > 0) {
+      const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [cooldown]);
+
   const handleComment = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!comment.trim()) return;
 
     setIsCommentLoading(true);
-    await addComment(post.id, {
-      id: crypto.randomUUID(),
-      from: commentFrom || 'Anonim',
-      text: comment,
-      timestamp: new Date(),
-      postId: post.id,
-    });
-    setComment('');
-    setCommentFrom('');
-    setIsCommentLoading(false);
-    onUpdate();
-    toast({
-      description: 'Komentarmu telah berhasil ditambahkan',
-    });
+    try {
+      await addComment(post.id, { text: comment, from: commentFrom || 'Anonim' });
+      setComment('');
+      setCommentFrom('');
+      onUpdate();
+      toast({ description: 'Komentar berhasil ditambahkan' });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({ description: error.message, variant: 'destructive' });
+      } else {
+        toast({ description: 'Terjadi masalah, coba lagi.', variant: 'destructive' });
+      }
+    } finally {
+      setIsCommentLoading(false);
+      setCooldown(5); 
+    }
   };
 
   const date = new Date(post.timestamp);
@@ -179,7 +189,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
                     onChange={(e) => setComment(e.target.value)}
                     className="flex-1"
                   />
-                  <Button type="submit" size="sm" disabled={isCommentLoading}>
+                  <Button type="submit" size="sm" disabled={isCommentLoading || cooldown > 0}>
                   {isCommentLoading ? (
                       <span className="loader border-t-transparent border-white border-2 border-t-2 rounded-full w-4 h-4 animate-spin"></span>
                     ) : (

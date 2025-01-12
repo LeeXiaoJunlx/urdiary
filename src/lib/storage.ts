@@ -26,7 +26,7 @@ export async function savePost(post: NewPost) {
   const existingPost = await prisma.post.findFirst({
     where: {
       message: post.message,
-      from: post.from, 
+      from: post.from || 'Anonim', 
     },
   });
 
@@ -54,7 +54,7 @@ export async function addComment(postId: string, comment: NewComment) {
   const existingComment = await prisma.comment.findFirst({
     where: {
       text: comment.text,
-      from: comment.from, 
+      from: comment.from || 'Anonim', 
       postId: postId,
     },
   });

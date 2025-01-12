@@ -6,7 +6,6 @@ import { Button } from './ui/button';
 import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { savePost } from '@/lib/storage';
-import { KeluhPost } from '@/app/types';
 import { useToast } from '@/hooks/use-toast';
 
 interface KeluhAddProps {
@@ -41,20 +40,34 @@ export function KeluhAdd({
     e.preventDefault();
     setIsSubmitting(true);
 
-    await savePost({
-        from: formData.from,
+    try {
+      await savePost({
+        from: formData.from || 'Anonim',
         to: formData.to,
         message: formData.message,
       });
-    setFormData({ from: '', to: '', message: '' });
-    setIsSubmitting(false);
-    onOpenChange(false);
-    onPostCreated();
-    setCooldown(5);
-
-    toast({
-      description: 'Keluhanmu telah berhasil ditambahkan',
-    });
+      setFormData({ from: '', to: '', message: '' });
+      onOpenChange(false);
+      onPostCreated();
+      setCooldown(5);
+      toast({
+        description: 'Keluhanmu telah berhasil ditambahkan',
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        toast({
+          description: error.message,
+          variant: 'destructive',
+        });
+      } else {
+        toast({
+          description: 'Terjadi masalah, coba lagi.',
+          variant: 'destructive',
+        });
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
