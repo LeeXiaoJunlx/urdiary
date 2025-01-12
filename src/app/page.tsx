@@ -11,15 +11,18 @@ import { useEffect, useState } from "react";
 import { KeluhPost } from "./types";
 import { Navbar } from "@/components/ui/navbar";
 import Image from "next/image";
+import { SkeletonCard } from "@/components/skeleton-card";
 
 export default function Home() {
   const [posts, setPosts] = useState<KeluhPost[]>([]);
   const [isNewPostOpen, setIsNewPostOpen] = useState(false);
   const [isWibuMode, setIsWibuMode] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const loadPosts = async () => {
     const posts = await getPosts();
     setPosts(posts);
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -67,16 +70,20 @@ export default function Home() {
           </Button>
         </div>
 
-        
+        {loading ? (
+          <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <SkeletonCard key={index} />
+            ))}
+          </div>
+        ) : (
           <div className="relative z-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl mx-auto">
             {posts.map((post) => (
               <KeluhCard key={post.id} post={post} onUpdate={loadPosts} />
             ))}
           </div>
+        )}
         
-
-        
-
         <KeluhAdd
           open={isNewPostOpen}
           onOpenChange={setIsNewPostOpen}
