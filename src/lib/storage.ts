@@ -12,7 +12,7 @@ export async function getPosts() {
 }
 
 export async function savePost(post: any) {
-  const { comments, ...postData } = post;
+  const { ...postData } = post;
   return await prisma.post.create({
     data: postData,
   });

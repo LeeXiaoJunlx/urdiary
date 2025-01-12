@@ -25,8 +25,11 @@ export function KeluhAdd({
     message: '',
   });
 
+  const [isSubmitting, setIsSubmitting] = useState(false); 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     const newPost: Omit<KeluhPost, 'comments'> = {
       id: crypto.randomUUID(),
@@ -39,6 +42,7 @@ export function KeluhAdd({
 
     await savePost(newPost);
     setFormData({ from: '', to: '', message: '' });
+    setIsSubmitting(false);
     onOpenChange(false);
     onPostCreated();
   };
@@ -78,8 +82,12 @@ export function KeluhAdd({
               className="min-h-[100px]"
             />
           </div>
-          <Button type="submit" className="w-full">
-            Tambah Keluhan
+          <Button type="submit" className="w-full" disabled={isSubmitting}>
+            {isSubmitting ? (
+              <span className="loader border-t-transparent border-white border-2 border-t-2 rounded-full w-4 h-4 animate-spin"></span>
+            ) : (
+              'Tambah Keluhan'
+            )}
           </Button>
         </form>
       </DialogContent>

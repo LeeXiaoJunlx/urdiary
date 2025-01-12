@@ -79,8 +79,8 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
             </p>
           </div>
           <div className="text-xs text-gray-400">
-            <div className="flex items-center gap-1 justify-end">
-              <Calendar className="w-3 h-3" />
+            <div className="flex items-center gap-1.5 justify-end">
+              <Calendar className="w-3" />
               <span>{formattedDateTime}</span>
             </div>
           </div>
@@ -125,7 +125,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
           <div className="space-y-4">
             <div className="flex justify-between items-center">
               <p className="text-sm text-gray-500">Dari: {post.from}</p>
-              <div className="text-sm text-gray-400 flex items-center gap-1">
+              <div className="text-sm text-gray-400 flex items-center gap-1.5">
                 <Calendar className="w-4 h-4" />
                 <span>{formattedDateTime}</span>
               </div>
@@ -184,14 +184,29 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
                 </form>
 
                 <div className="space-y-3">
-                  {post.comments.map((comment) => (
-                    <div key={comment.id} className="text-sm space-y-1">
-                      <p className="font-medium">{comment.from}</p>
-                      <p className="text-gray-600 dark:text-gray-300">
-                        {comment.text}
-                      </p>
-                    </div>
-                  ))}
+                  {post.comments.map((comment) => {
+                    const commentDate = new Date(comment.timestamp);
+                    const formattedCommentDate = commentDate.toLocaleString([], {
+                      year: 'numeric',
+                      month: 'short',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    });
+                    return (
+                      <div key={comment.id} className="flex justify-between items-start">
+                        <div className="text-sm space-y-1">
+                          <p className="font-medium">{comment.from}</p>
+                          <p className="text-gray-600 dark:text-gray-300">
+                            {comment.text}
+                          </p>
+                        </div>
+                        <p className="text-xs text-gray-400">
+                          {formattedCommentDate}
+                        </p>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
