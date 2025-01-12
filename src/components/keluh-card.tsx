@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { KeluhPost } from '@/app/types';
 import { Heart, MessageCircle, Calendar } from 'lucide-react';
 import { Button } from './ui/button';
@@ -19,11 +19,13 @@ interface KeluhCardProps {
 export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [showComments, setShowComments] = useState(false);
-  const [comment, setComment] = useState('');
-  const [commentFrom, setCommentFrom] = useState('');
   const [isCommentLoading, setIsCommentLoading] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const { toast } = useToast();
+
+  const commentRef = useRef<HTMLInputElement>(null);
+  const commentFromRef = useRef<HTMLInputElement>(null);
+
 
   const handleLove = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -48,13 +50,19 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
 
   const handleComment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!comment.trim()) return;
+    if (cooldown > 0) return;
+
+    const comment = commentRef.current?.value.trim();
+    const commentFrom = commentFromRef.current?.value.trim() || 'Anonim';
+
+    if (!comment) return;
 
     setIsCommentLoading(true);
     try {
       await addComment(post.id, { text: comment, from: commentFrom || 'Anonim' });
-      setComment('');
-      setCommentFrom('');
+      if (commentRef.current) commentRef.current.value = '';
+      if (commentFromRef.current) commentFromRef.current.value = '';
+      
       onUpdate();
       toast({ description: 'Komentar berhasil ditambahkan' });
     } catch (error) {
@@ -179,14 +187,12 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
                 <form onSubmit={handleComment} className="flex gap-2">
                   <Input
                     placeholder="Dari (Opsional)"
-                    value={commentFrom}
-                    onChange={(e) => setCommentFrom(e.target.value)}
+                    ref={commentFromRef}
                     className="w-1/3"
                   />
                   <Input
                     placeholder="Tambahkan komentar..."
-                    value={comment}
-                    onChange={(e) => setComment(e.target.value)}
+                    ref={commentRef}
                     className="flex-1"
                   />
                   <Button type="submit" size="sm" disabled={isCommentLoading || cooldown > 0}>

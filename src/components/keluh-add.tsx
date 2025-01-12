@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -19,11 +19,9 @@ export function KeluhAdd({
   onOpenChange,
   onPostCreated,
 }: KeluhAddProps) {
-  const [formData, setFormData] = useState({
-    from: '',
-    to: '',
-    message: '',
-  });
+  const fromRef = useRef<HTMLInputElement>(null);
+  const toRef = useRef<HTMLInputElement>(null);
+  const messageRef = useRef<HTMLTextAreaElement>(null);
 
   const [isSubmitting, setIsSubmitting] = useState(false); 
   const [cooldown, setCooldown] = useState(0);
@@ -42,14 +40,19 @@ export function KeluhAdd({
 
     try {
       await savePost({
-        from: formData.from || 'Anonim',
-        to: formData.to,
-        message: formData.message,
+        from: fromRef.current?.value || 'Anonim',
+        to: toRef.current?.value || '',
+        message: messageRef.current?.value || '',
       });
-      setFormData({ from: '', to: '', message: '' });
+
+      if (fromRef.current) fromRef.current.value = '';
+      if (toRef.current) toRef.current.value = '';
+      if (messageRef.current) messageRef.current.value = '';
+
       onOpenChange(false);
       onPostCreated();
       setCooldown(5);
+
       toast({
         description: 'Keluhanmu telah berhasil ditambahkan',
       });
@@ -80,27 +83,20 @@ export function KeluhAdd({
           <div>
             <Input
               placeholder="Dari (opsional)"
-              value={formData.from}
-              onChange={(e) =>
-                setFormData({ ...formData, from: e.target.value })
-              }
+              ref={fromRef}
             />
           </div>
           <div>
             <Input
               placeholder="Untuk"
-              value={formData.to}
-              onChange={(e) => setFormData({ ...formData, to: e.target.value })}
+              ref={toRef}
               required
             />
           </div>
           <div>
             <Textarea
               placeholder="Keluhanmu"
-              value={formData.message}
-              onChange={(e) =>
-                setFormData({ ...formData, message: e.target.value })
-              }
+              ref={messageRef}
               required
               className="min-h-[100px]"
             />
