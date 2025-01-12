@@ -7,6 +7,7 @@ import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { savePost } from '@/lib/storage';
 import { KeluhPost } from '@/app/types';
+import { useToast } from '@/hooks/use-toast';
 
 interface KeluhAddProps {
   open: boolean;
@@ -26,6 +27,7 @@ export function KeluhAdd({
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false); 
+  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,6 +47,11 @@ export function KeluhAdd({
     setIsSubmitting(false);
     onOpenChange(false);
     onPostCreated();
+
+    toast({
+      title: 'Keluhan ditambahkan',
+      description: 'Keluhanmu telah berhasil ditambahkan',
+    });
   };
 
   return (

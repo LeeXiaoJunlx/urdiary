@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { cn } from '@/lib/utils';
 import { toggleLove, addComment } from '@/lib/storage';
 import { Input } from './ui/input';
+import { useToast } from '@/hooks/use-toast';
 
 interface KeluhCardProps {
   post: KeluhPost;
@@ -21,6 +22,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
   const [comment, setComment] = useState('');
   const [commentFrom, setCommentFrom] = useState('');
   const [isCommentLoading, setIsCommentLoading] = useState(false);
+  const { toast } = useToast();
 
   const handleLove = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -52,6 +54,10 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
     setCommentFrom('');
     setIsCommentLoading(false);
     onUpdate();
+    toast({
+      title: 'Komentar ditambahkan',
+      description: 'Komentarmu telah berhasil ditambahkan',
+    });
   };
 
   const date = new Date(post.timestamp);
