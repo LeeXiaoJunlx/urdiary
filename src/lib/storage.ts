@@ -11,7 +11,18 @@ export async function getPosts() {
   });
 }
 
-export async function savePost(post: any) {
+export async function savePost(post: Post) {
+  const existingPost = await prisma.post.findFirst({
+    where: {
+      message: post.message,
+      from: post.from, 
+    },
+  });
+
+  if (existingPost) {
+    throw new Error('Dilarang spam ya kids');
+  }
+
   const { ...postData } = post;
   return await prisma.post.create({
     data: postData,
@@ -25,7 +36,19 @@ export async function updatePost(updatedPost: Post) {
   });
 }
 
-export async function addComment(postId: any, comment: Comment) {
+export async function addComment(postId: string, comment: Comment) {
+  const existingComment = await prisma.comment.findFirst({
+    where: {
+      text: comment.text,
+      from: comment.from, 
+      postId: postId,
+    },
+  });
+
+  if (existingComment) {
+    throw new Error('Sekali aja ya, jangan spam.');
+  }
+
   return await prisma.comment.create({
     data: {
       ...comment,
@@ -34,7 +57,7 @@ export async function addComment(postId: any, comment: Comment) {
   });
 }
 
-export async function toggleLove(postId: any) {
+export async function toggleLove(postId: string) {
   const post = await prisma.post.findUnique({
     where: { id: postId },
   });
