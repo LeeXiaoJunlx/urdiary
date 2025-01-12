@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { Button } from './ui/button';
 import { Input } from './ui/input';
@@ -27,26 +27,30 @@ export function KeluhAdd({
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false); 
+  const [cooldown, setCooldown] = useState(0);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (cooldown > 0) {
+      const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [cooldown]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const newPost: Omit<KeluhPost, 'comments'> = {
-      id: crypto.randomUUID(),
-      from: formData.from || 'Anonim',
-      to: formData.to,
-      message: formData.message,
-      timestamp: new Date(),
-      loveCount: 0,
-    };
-
-    await savePost(newPost);
+    await savePost({
+        from: formData.from,
+        to: formData.to,
+        message: formData.message,
+      });
     setFormData({ from: '', to: '', message: '' });
     setIsSubmitting(false);
     onOpenChange(false);
     onPostCreated();
+    setCooldown(5);
 
     toast({
       description: 'Keluhanmu telah berhasil ditambahkan',
@@ -88,7 +92,7 @@ export function KeluhAdd({
               className="min-h-[100px]"
             />
           </div>
-          <Button type="submit" className="w-full" disabled={isSubmitting}>
+          <Button type="submit" className="w-full" disabled={isSubmitting || cooldown > 0}>
             {isSubmitting ? (
               <span className="loader border-t-transparent border-white border-2 border-t-2 rounded-full w-4 h-4 animate-spin"></span>
             ) : (

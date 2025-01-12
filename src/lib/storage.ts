@@ -1,8 +1,19 @@
 "use server"
 
-import { PrismaClient, Post, Comment } from '@prisma/client';
+import { PrismaClient, Post } from '@prisma/client';
 
 const prisma = new PrismaClient();
+
+interface NewPost {
+  from: string;
+  to: string;
+  message: string;
+}
+
+interface NewComment {
+  from: string;
+  text: string;
+}
 
 export async function getPosts() {
   return await prisma.post.findMany({
@@ -11,7 +22,7 @@ export async function getPosts() {
   });
 }
 
-export async function savePost(post: Post) {
+export async function savePost(post: NewPost) {
   const existingPost = await prisma.post.findFirst({
     where: {
       message: post.message,
@@ -23,9 +34,12 @@ export async function savePost(post: Post) {
     throw new Error('Dilarang spam ya kids');
   }
 
-  const { ...postData } = post;
   return await prisma.post.create({
-    data: postData,
+    data: {
+      ...post,
+      timestamp: new Date(),
+      loveCount: 0,
+    },
   });
 }
 
@@ -36,7 +50,7 @@ export async function updatePost(updatedPost: Post) {
   });
 }
 
-export async function addComment(postId: string, comment: Comment) {
+export async function addComment(postId: string, comment: NewComment) {
   const existingComment = await prisma.comment.findFirst({
     where: {
       text: comment.text,
@@ -53,6 +67,7 @@ export async function addComment(postId: string, comment: Comment) {
     data: {
       ...comment,
       postId,
+      timestamp: new Date(),
     },
   });
 }
