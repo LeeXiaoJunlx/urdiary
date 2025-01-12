@@ -10,6 +10,8 @@ import { cn } from '@/lib/utils';
 import { toggleLove, addComment } from '@/lib/storage';
 import { Input } from './ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { filterBadWords } from '@/lib/filter-badwords';
+
 
 interface KeluhCardProps {
   post: KeluhPost;
@@ -59,7 +61,10 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
 
     setIsCommentLoading(true);
     try {
-      await addComment(post.id, { text: comment, from: commentFrom || 'Anonim' });
+      const filteredComment = filterBadWords(comment);
+      const filteredCommentFrom = filterBadWords(commentFrom);
+
+      await addComment(post.id, { text: filteredComment, from: filteredCommentFrom });
       if (commentRef.current) commentRef.current.value = '';
       if (commentFromRef.current) commentFromRef.current.value = '';
       

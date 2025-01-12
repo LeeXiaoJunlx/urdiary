@@ -7,6 +7,7 @@ import { Input } from './ui/input';
 import { Textarea } from './ui/textarea';
 import { savePost } from '@/lib/storage';
 import { useToast } from '@/hooks/use-toast';
+import { filterBadWords } from '@/lib/filter-badwords';
 
 interface KeluhAddProps {
   open: boolean;
@@ -39,10 +40,14 @@ export function KeluhAdd({
     setIsSubmitting(true);
 
     try {
+      const filteredFrom = filterBadWords(fromRef.current?.value || 'Anonim');
+      const filteredTo = filterBadWords(toRef.current?.value || '');
+      const filteredMessage = filterBadWords(messageRef.current?.value || '');
+
       await savePost({
-        from: fromRef.current?.value || 'Anonim',
-        to: toRef.current?.value || '',
-        message: messageRef.current?.value || '',
+        from: filteredFrom,
+        to: filteredTo,
+        message: filteredMessage,
       });
 
       if (fromRef.current) fromRef.current.value = '';

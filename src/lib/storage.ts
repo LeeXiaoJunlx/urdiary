@@ -1,6 +1,7 @@
 "use server"
 
 import { PrismaClient, Post } from '@prisma/client';
+import { filterBadWords } from './filter-badwords';
 
 const prisma = new PrismaClient();
 
@@ -31,12 +32,18 @@ export async function savePost(post: NewPost) {
   });
 
   if (existingPost) {
-    throw new Error('Dilarang spam ya kids');
+    throw new Error('Dilarang spam ya');
   }
+
+  const filteredFrom = filterBadWords(post.from || 'Anonim');
+  const filteredTo = filterBadWords(post.to || '');
+  const filteredMessage = filterBadWords(post.message);
 
   return await prisma.post.create({
     data: {
-      ...post,
+      from: filteredFrom,
+      to: filteredTo,
+      message: filteredMessage,
       timestamp: new Date(),
       loveCount: 0,
     },
@@ -63,13 +70,17 @@ export async function addComment(postId: string, comment: NewComment) {
     throw new Error('Sekali aja ya, jangan spam.');
   }
 
+  const filteredFrom = filterBadWords(comment.from || 'Anonim');
+  const filteredText = filterBadWords(comment.text);
+
   return await prisma.comment.create({
     data: {
-      ...comment,
+      from: filteredFrom,
+      text: filteredText,
       postId,
       timestamp: new Date(),
     },
-  });
+  });;
 }
 
 export async function toggleLove(postId: string) {
