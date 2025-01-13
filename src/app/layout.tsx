@@ -8,6 +8,7 @@ import Script from "next/script";
 const dmSans = DM_Sans({
   subsets: ["latin"],
   display: 'swap',
+  preload: false,
 });
 
 export const metadata: Metadata = {

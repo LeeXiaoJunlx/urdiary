@@ -1,17 +1,16 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useRef } from 'react';
-import { KeluhPost } from '@/app/types';
-import { Heart, MessageCircle, Calendar } from 'lucide-react';
-import { Button } from './ui/button';
-import { Card } from './ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
-import { cn } from '@/lib/utils';
-import { toggleLove, addComment } from '@/lib/storage';
-import { Input } from './ui/input';
-import { useToast } from '@/hooks/use-toast';
-import { filterBadWords } from '@/lib/filter-badwords';
-
+import { KeluhPost } from "@/app/types";
+import { useToast } from "@/hooks/use-toast";
+import { filterBadWords } from "@/lib/filter-badwords";
+import { addComment, toggleLove } from "@/lib/storage";
+import { cn } from "@/lib/utils";
+import { Calendar, Heart, MessageCircle } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "./ui/button";
+import { Card } from "./ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+import { Input } from "./ui/input";
 
 interface KeluhCardProps {
   post: KeluhPost;
@@ -28,17 +27,16 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
   const commentRef = useRef<HTMLInputElement>(null);
   const commentFromRef = useRef<HTMLInputElement>(null);
 
-
   const handleLove = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    const lovedPosts = JSON.parse(localStorage.getItem('lovedPosts') || '[]');
+    const lovedPosts = JSON.parse(localStorage.getItem("lovedPosts") || "[]");
     if (lovedPosts.includes(post.id)) {
-      return; 
+      return;
     }
 
     await toggleLove(post.id);
     lovedPosts.push(post.id);
-    localStorage.setItem('lovedPosts', JSON.stringify(lovedPosts));
+    localStorage.setItem("lovedPosts", JSON.stringify(lovedPosts));
 
     onUpdate();
   };
@@ -55,7 +53,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
     if (cooldown > 0) return;
 
     const comment = commentRef.current?.value.trim();
-    const commentFrom = commentFromRef.current?.value.trim() || 'Anonim';
+    const commentFrom = commentFromRef.current?.value.trim() || "Anonim";
 
     if (!comment) return;
 
@@ -64,31 +62,37 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
       const filteredComment = filterBadWords(comment);
       const filteredCommentFrom = filterBadWords(commentFrom);
 
-      await addComment(post.id, { text: filteredComment, from: filteredCommentFrom });
-      if (commentRef.current) commentRef.current.value = '';
-      if (commentFromRef.current) commentFromRef.current.value = '';
-      
+      await addComment(post.id, {
+        text: filteredComment,
+        from: filteredCommentFrom,
+      });
+      if (commentRef.current) commentRef.current.value = "";
+      if (commentFromRef.current) commentFromRef.current.value = "";
+
       onUpdate();
-      toast({ description: 'Komentar berhasil ditambahkan' });
+      toast({ description: "Komentar berhasil ditambahkan" });
     } catch (error) {
       if (error instanceof Error) {
-        toast({ description: error.message, variant: 'destructive' });
+        toast({ description: error.message, variant: "destructive" });
       } else {
-        toast({ description: 'Terjadi masalah, coba lagi.', variant: 'destructive' });
+        toast({
+          description: "Terjadi masalah, coba lagi.",
+          variant: "destructive",
+        });
       }
     } finally {
       setIsCommentLoading(false);
-      setCooldown(5); 
+      setCooldown(5);
     }
   };
 
   const date = new Date(post.timestamp);
   const formattedDateTime = date.toLocaleString([], {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-    hour: '2-digit',
-    minute: '2-digit',
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
   });
 
   return (
@@ -99,9 +103,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
       >
         <div className="flex justify-between items-start mb-2">
           <div className="space-y-1">
-            <p className="text-xs text-gray-500">
-              Dari: {post.from}
-            </p>
+            <p className="text-xs text-gray-500">Dari: {post.from}</p>
             <p className="text-xs font-medium text-primary text-text">
               Untuk: {post.to}
             </p>
@@ -115,21 +117,19 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
         </div>
 
         <div className="h-8 overflow-hidden">
-          <p className="text-base line-clamp-1 text-text">
-            {post.message}
-          </p>
+          <p className="text-base line-clamp-1 text-text">{post.message}</p>
         </div>
 
         <div className="flex items-center gap-2 mt-2">
           <Button
-            variant= "noShadow"
+            variant="noShadow"
             size="sm"
             className="flex items-center gap-2 bg-neutral hover:bg-main dark:bg-bw"
             onClick={handleLove}
           >
             <Heart
-              className={cn('w-4 h-4', {
-                'fill-red-500 text-red-500': post.loveCount > 0,
+              className={cn("w-4 h-4", {
+                "fill-red-500 text-red-500": post.loveCount > 0,
               })}
             />
             <span className="text-sm text-text">{post.loveCount}</span>
@@ -139,8 +139,8 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
             size="sm"
             className="flex items-center gap-2 bg-neutral hover:bg-main dark:bg-bw"
           >
-          <MessageCircle className="w-4 h-4 text-text" />
-          <span className="text-sm text-text">{post.comments.length}</span>
+            <MessageCircle className="w-4 h-4 text-text" />
+            <span className="text-sm text-text">{post.comments.length}</span>
           </Button>
         </div>
       </Card>
@@ -162,15 +162,15 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
             <p className="text-sm whitespace-pre-wrap">{post.message}</p>
 
             <div className="flex items-center gap-4">
-            <Button
-            variant= "noShadow"
-            size="sm"
-            className="flex items-center gap-2 bg-neutral hover:bg-main dark:bg-bw"
-            onClick={handleLove}
-          >
+              <Button
+                variant="noShadow"
+                size="sm"
+                className="flex items-center gap-2 bg-neutral hover:bg-main dark:bg-bw"
+                onClick={handleLove}
+              >
                 <Heart
-                  className={cn('w-5 h-5', {
-                    'fill-red-500 text-red-500': post.loveCount > 0,
+                  className={cn("w-5 h-5", {
+                    "fill-red-500 text-red-500": post.loveCount > 0,
                   })}
                 />
                 <span className="text-text">{post.loveCount}</span>
@@ -183,7 +183,9 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
                 onClick={() => setShowComments(!showComments)}
               >
                 <MessageCircle className="w-5 h-5 text-text " />
-                <span className="text-text">{post.comments.length} Komentar</span>
+                <span className="text-text">
+                  {post.comments.length} Komentar
+                </span>
               </Button>
             </div>
 
@@ -200,11 +202,15 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
                     ref={commentRef}
                     className="flex-1"
                   />
-                  <Button type="submit" size="sm" disabled={isCommentLoading || cooldown > 0}>
-                  {isCommentLoading ? (
+                  <Button
+                    type="submit"
+                    size="sm"
+                    disabled={isCommentLoading || cooldown > 0}
+                  >
+                    {isCommentLoading ? (
                       <span className="loader border-t-transparent border-white border-2 border-t-2 rounded-full w-4 h-4 animate-spin"></span>
                     ) : (
-                      'Kirim'
+                      "Kirim"
                     )}
                   </Button>
                 </form>
@@ -212,15 +218,21 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
                 <div className="space-y-3">
                   {post.comments.map((comment) => {
                     const commentDate = new Date(comment.timestamp);
-                    const formattedCommentDate = commentDate.toLocaleString([], {
-                      year: 'numeric',
-                      month: 'short',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    });
+                    const formattedCommentDate = commentDate.toLocaleString(
+                      [],
+                      {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                      }
+                    );
                     return (
-                      <div key={comment.id} className="flex justify-between items-start">
+                      <div
+                        key={comment.id}
+                        className="flex justify-between items-start"
+                      >
                         <div className="text-sm space-y-1">
                           <p className="font-medium">{comment.from}</p>
                           <p className="text-gray-600 dark:text-gray-300">
