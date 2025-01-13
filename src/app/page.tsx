@@ -28,7 +28,7 @@ export default function Home() {
     if (!hasMore && !reset) return;
 
     try {
-      const newPosts = await getPosts(reset ? 0 : posts.length, 10);
+      const newPosts = await getPosts(reset ? 0 : posts.length, 12);
 
       if (reset) {
         setPosts(newPosts);
@@ -38,7 +38,7 @@ export default function Home() {
         setPage((prev) => prev + 1);
       }
 
-      setHasMore(newPosts.length === 10);
+      setHasMore(newPosts.length === 12);
     } catch (error) {
       console.error("Error loading posts:", error);
     } finally {
