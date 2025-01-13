@@ -16,10 +16,12 @@ interface NewComment {
   text: string;
 }
 
-export async function getPosts() {
+export async function getPosts(skip = 0, take = 12) {
   return await prisma.post.findMany({
     include: { comments: true },
     orderBy: { timestamp: 'desc' },
+    skip,
+    take,
   });
 }
 
