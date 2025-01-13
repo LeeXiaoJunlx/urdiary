@@ -128,7 +128,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
             onClick={handleLove}
           >
             <Heart
-              className={cn("w-4 h-4", {
+              className={cn("w-4 h-4 text-text", {
                 "fill-red-500 text-red-500": post.loveCount > 0,
               })}
             />
@@ -169,7 +169,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
                 onClick={handleLove}
               >
                 <Heart
-                  className={cn("w-5 h-5", {
+                  className={cn("w-5 h-5 text-text", {
                     "fill-red-500 text-red-500": post.loveCount > 0,
                   })}
                 />
