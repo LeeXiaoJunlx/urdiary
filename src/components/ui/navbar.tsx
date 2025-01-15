@@ -30,7 +30,7 @@ interface NavbarProps {
             <DialogContent>
                 <DialogTitle>Tentang Keluh Kesah</DialogTitle>
                 <DialogDescription>
-                  Keluh Kesah adalah adalah tempat bagi siapa saja untuk mencurahkan isi hati dan berbagi pengalaman. Platform ini dibuat dengan tujuan untuk mengurangi angka stress di Indonesia. (Anjay)
+                  Keluh Kesah adalah adalah tempat bagi siapa saja untuk mencurahkan isi hati dan berbagi pengalaman. Platform ini dibuat dengan tujuan untuk mengurangi angka stress di Indonesia.
                 </DialogDescription>
                 <div className="flex items-center gap-2">
                 <Switch id="wibu-mode" className="z-10" checked={isWibuMode} onCheckedChange={(checked) => setIsWibuMode(checked)}/>
