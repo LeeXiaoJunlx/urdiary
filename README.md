@@ -15,9 +15,9 @@
 
 **Keluh Kesah** is an anonymous platform where users can freely express themselves and share their thoughts. The goal is to create a safe space for people to vent, share experiences, and hopefully reduce stress.
 
+---
 
-
-## Features
+## ✨ Features
 
 - **Infinite Scrolling**: Load posts dynamically as you scroll for a smooth browsing experience.
 - **Rate Limiting and Cooldowns**: Prevent spam and abuse with rate limiting and cooldown periods.
@@ -25,13 +25,16 @@
 - **Anonymous Sharing**: Share your thoughts and feelings without revealing your identity.
 - **Safe Space**: A supportive environment for open expression.
 
+---
 
-## Live Demo
+
+## 🌐 Live Demo
 
 Check out the live demo here: [https://keluhkesah.vercel.app](https://keluhkesah.vercel.app)
 
+---
 
-## Getting Started
+## 🚀 Getting Started
 
 To get started with the project locally, follow these steps:
 
@@ -78,15 +81,15 @@ To get started with the project locally, follow these steps:
 6. **Open your browser**:
    Visit `http://localhost:3000` to view the application.
 
+---
 
-
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! If you'd like to contribute, feel free to fork the repository, create a new branch, and submit a pull request.
 
+---
 
-
-## License
+## 📜 License
 
 This project is licensed under the GNU GPL 3.0 License. See the [LICENSE](LICENSE) file for details.
 
