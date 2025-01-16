@@ -23,22 +23,36 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
   const [isCommentLoading, setIsCommentLoading] = useState(false);
   const [cooldown, setCooldown] = useState(0);
   const { toast } = useToast();
+  const [isLoved, setIsLoved] = useState(false);
 
   const commentRef = useRef<HTMLInputElement>(null);
   const commentFromRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    const lovedPosts = JSON.parse(localStorage.getItem("lovedPosts") || "[]");
+    setIsLoved(lovedPosts.includes(post.id));
+  }, [post.id]);
+
   const handleLove = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    const lovedPosts = JSON.parse(localStorage.getItem("lovedPosts") || "[]");
-    if (lovedPosts.includes(post.id)) {
-      return;
-    }
 
+    if (isLoved) return;
+
+    try {
     await toggleLove(post.id);
+    
+    const lovedPosts = JSON.parse(localStorage.getItem("lovedPosts") || "[]");
     lovedPosts.push(post.id);
     localStorage.setItem("lovedPosts", JSON.stringify(lovedPosts));
-
+    
+    setIsLoved(true);
     onUpdate();
+  } catch (error) {
+    toast({
+      description: error instanceof Error ? error.message : "Terjadi masalah, coba lagi.",
+      variant: "destructive"
+    });
+  }
   };
 
   useEffect(() => {
@@ -129,7 +143,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
           >
             <Heart
               className={cn("w-4 h-4 text-text", {
-                "fill-red-500 text-red-500": post.loveCount > 0,
+                "fill-red-500 text-red-500": isLoved,
               })}
             />
             <span className="text-sm text-text">{post.loveCount}</span>
