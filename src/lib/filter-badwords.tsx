@@ -43,13 +43,27 @@ const badWords = [
     "onlyfans",
     "tocil",
     "tobrut",
+    "jembot",
   ];
+
+  function normalizeWord(word: string): string {
+    return word.toLowerCase().replace(/(.)\1+/g, '$1');
+  }
 
 export function filterBadWords(text: string): string {
   let filteredText = text;
-  badWords.forEach((word) => {
-    const regex = new RegExp(`\\b${word}\\b`, 'gi');
-    filteredText = filteredText.replace(regex, '*'.repeat(word.length));
+
+  const normalizedBadWords = badWords.map(word => ({
+    original: word,
+    normalized: normalizeWord(word)
+  }));
+
+  normalizedBadWords.forEach(({ normalized }) => {
+    const pattern = normalized.split('').join('[\\s]*');
+    const regex = new RegExp(`\\b[\\s]*${pattern}[\\s]*\\b`, 'gi');
+    
+    filteredText = filteredText.replace(regex, (match) => '*'.repeat(match.length));
   });
+
   return filteredText;
 }
