@@ -44,6 +44,11 @@ const badWords = [
     "tocil",
     "tobrut",
     "jembot",
+    "sex",
+    "seks",
+    "ewe",
+    "ewean",
+    "eue",
   ];
 
   function normalizeWord(word: string): string {
