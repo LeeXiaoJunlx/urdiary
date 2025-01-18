@@ -184,7 +184,7 @@ export function KeluhCard({ post, onUpdate }: KeluhCardProps) {
               >
                 <Heart
                   className={cn("w-5 h-5 text-text", {
-                    "fill-red-500 text-red-500": post.loveCount > 0,
+                    "fill-red-500 text-red-500": isLoved,
                   })}
                 />
                 <span className="text-text">{post.loveCount}</span>
