@@ -55,7 +55,7 @@ export function KeluhAdd({ open, onOpenChange, onPostCreated }: KeluhAddProps) {
       setCooldown(5);
 
       toast({
-        description: "Keluhanmu telah berhasil ditambahkan",
+        description: "Diarymu telah berhasil ditambahkan",
       });
     } catch (error) {
       if (error instanceof Error) {
@@ -78,7 +78,7 @@ export function KeluhAdd({ open, onOpenChange, onPostCreated }: KeluhAddProps) {
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Mulai mengeluh</DialogTitle>
+          <DialogTitle>Public Diary</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -89,7 +89,7 @@ export function KeluhAdd({ open, onOpenChange, onPostCreated }: KeluhAddProps) {
           </div>
           <div>
             <Textarea
-              placeholder="Keluhanmu"
+              placeholder="Diary"
               ref={messageRef}
               required
               className="min-h-[100px]"
