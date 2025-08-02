@@ -43,7 +43,7 @@ interface NavbarProps {
                 </DialogDescription>
             </DialogContent>
           </Dialog>
-            <Link href="https://github.com/ifalfahri/keluhkesah"><Button variant="neutral" className="w-10 h-10"><Github /></Button></Link>
+            <Link href="https://github.com/SeptianXzc"><Button variant="neutral" className="w-10 h-10"><Github /></Button></Link>
             <ModeToggle />
             
           </div>
