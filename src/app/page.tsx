@@ -85,10 +85,10 @@ export default function Home() {
           ) : (
             <div>
               <h1 className="relative z-10 text-4xl font-black text-center mb-4">
-                Keluh Kesah
+                Your Diary
               </h1>
               <p className="relative z-10 text-muted-foreground text-center mb-6">
-                Silahkan berkeluh kesah di sini.
+                Please enter your diary.
               </p>
             </div>
           )}
@@ -98,7 +98,7 @@ export default function Home() {
             onClick={() => setIsNewPostOpen(true)}
           >
             <MessageSquarePlus className="w-5 h-5" />
-            Tambah Keluhan
+            Add Diary
           </Button>
         </div>
 
