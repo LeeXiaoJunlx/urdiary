@@ -19,18 +19,18 @@ interface NavbarProps {
         {isWibuMode ? (
           <Image src="/keluhkesah.png" alt="Keluh Kesah Logo" width={120} height={120} unoptimized />
         ) : (
-          <div className="font-bold text-lg">Keluh Kesah</div>
+          <div className="font-bold text-lg">Your Diary</div>
         )}
           <div className="flex items-center gap-4">
           
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="neutral">Tentang</Button>
+              <Button variant="neutral">About</Button>
             </DialogTrigger>
             <DialogContent>
-                <DialogTitle>Tentang Keluh Kesah</DialogTitle>
+                <DialogTitle>Tentang Your Diary</DialogTitle>
                 <DialogDescription>
-                  Keluh Kesah adalah adalah tempat bagi siapa saja untuk mencurahkan isi hati dan berbagi pengalaman. Platform ini dibuat dengan tujuan untuk mengurangi angka stress di Indonesia.
+                  Your Diary adalah adalah tempat bagi siapa saja untuk mencurahkan isi hati dan berbagi pengalaman. Platform ini dibuat dengan tujuan untuk mengurangi angka stress di Indonesia.
                 </DialogDescription>
                 <div className="flex items-center gap-2">
                 <Switch id="wibu-mode" className="z-10" checked={isWibuMode} onCheckedChange={(checked) => setIsWibuMode(checked)}/>
@@ -39,7 +39,7 @@ interface NavbarProps {
           </Label>
                 </div>
                 <DialogDescription>
-                  Dibuat oleh <Link href="https://ifal.me" className="text-main hover:text-black">Ifal Fahri A</Link>
+                  Dibuat oleh <Link href="https://www.instagram.com/septiannhdnta?igsh=MXN6cHd4OTlwYXRxag==" className="text-main hover:text-black">Lee Xiao Jun</Link>
                 </DialogDescription>
             </DialogContent>
           </Dialog>
