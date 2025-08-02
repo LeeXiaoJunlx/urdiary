@@ -12,8 +12,8 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Keluh Kesah",
-  description: "Keluh Kesah adalah adalah tempat bagi siapa saja untuk mencurahkan isi hati dan berbagi pengalaman. Platform ini dibuat dengan tujuan untuk mengurangi angka stress di Indonesia.",
+  title: "Your Diary",
+  description: "Your Diary adalah adalah tempat bagi siapa saja untuk mencurahkan isi hati dan berbagi pengalaman. Platform ini dibuat dengan tujuan untuk mengurangi angka stress di Indonesia.",
   keywords: "keluh kesah, curhat, stress, menfess, fess, indonesia, keluhan, pengalaman, curhatan",
 };
 
